@@ -1,6 +1,9 @@
-"""
+"""Lotto game, guess 6 numbers from 1-49 range
 
-
+    Usage:
+    python app.py
+    import app
+    app.main
 """
 from random import choices
 
@@ -20,26 +23,29 @@ def ask_user_for_input(text_for_user):
 def get_n_numbers_from_user(user_numbers_amount, min_digit, max_digit):
     """
     Ask user to provide n numbers form given range
-    :param user_numbers_amount:
+    :param user_numbers_amount: AMount of numbers to provide by user
+    :type user_numbers_amount: int
     :param min_digit: Minimal value for range from which user should pick number
     :type min_digit: int
     :param max_digit: Maximum value for range from which user should pick number
-    :type max_digit:
+    :type max_digit: int
     :return: User input as int, wrong user input handled
     :rtype: int
     """
     user_numbers = []
 
+    # asking user to provide requested amount of numbers
     for idx in range(user_numbers_amount):
-        user_input = None
 
         while len(user_numbers) < user_numbers_amount:
             if len(user_numbers) == 0:
                 print("\nYou have not provided any number")
             else:
                 print(f"\nYou have already provided those numbers: {user_numbers}")
+
             user_input = ask_user_for_input(f"Provide number from range {min_digit}-{max_digit}: ")
 
+            # check is provided text is a number
             try:
                 user_input = int(user_input)
                 user_input_is_digit = True
@@ -64,10 +70,26 @@ def get_n_numbers_from_user(user_numbers_amount, min_digit, max_digit):
 
 
 def pick_n_random_number_from_given_range(user_numbers_amount, min_digit, max_digit):
+    """
+    Pick random n numbers from given range
+    :param user_numbers_amount: Amount of numbers to be drawn
+    :type user_numbers_amount: int
+    :param min_digit: Minimal value for range from which number will be drawn
+    :type min_digit: int
+    :param max_digit: Maximum value for range from which number will be drawn
+    :type max_digit: int
+    :return: collection of drawn numbers
+    :rtype: list
+    """
     return choices(range(min_digit, max_digit + min_digit), k=user_numbers_amount)
 
 
 def play_lotto_game():
+    """
+    Lotto game, ask user for 6 numbers from range 1-49, drawn 6 numbers from same range and check how many
+    number of hits user have, user wins if hits are greater than 2
+    :return: None
+    """
     number_to_drawn = 6
     min_digit = 1
     max_digit = 49
@@ -75,6 +97,8 @@ def play_lotto_game():
     user_numbers = get_n_numbers_from_user(number_to_drawn, min_digit, max_digit)
     drawn_numbers = pick_n_random_number_from_given_range(number_to_drawn, min_digit, max_digit)
 
+    # check how many hits user have
+    # take number from user_numbers and iterate drawn_numbers looking for it, count every hit
     number_of_hits = sum(number in user_numbers for number in drawn_numbers)
 
     print(f'Your numbers are: {user_numbers}')
